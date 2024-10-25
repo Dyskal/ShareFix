@@ -27,7 +27,6 @@ class ShareActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        finish()
 
         if (intent.action == Intent.ACTION_SEND && intent.type == "text/plain") {
             val uri = Uri.parse(intent.getStringExtra(Intent.EXTRA_TEXT))
@@ -40,5 +39,6 @@ class ShareActivity : Activity() {
                 Toast.makeText(applicationContext, "ShareFix copied", Toast.LENGTH_SHORT).show()
             }
         }
+        finish()
     }
 }
