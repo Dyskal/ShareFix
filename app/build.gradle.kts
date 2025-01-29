@@ -1,46 +1,65 @@
-import org.gradle.kotlin.dsl.support.kotlinCompilerOptions
+@file:Suppress("UnstableApiUsage")
+
+import com.android.build.gradle.tasks.PackageAndroidArtifact
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
     namespace = "me.dyskal.sharefix"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "me.dyskal.sharefix"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.1"
         signingConfig = signingConfigs.getByName("debug")
+    }
+
+    flavorDimensions += "api"
+
+    productFlavors {
+        create("api26") {
+            dimension = "api"
+        }
+        create("api32") {
+            dimension = "api"
+            minSdk = 32
+            isDefault = true
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            vcsInfo.include = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_21
+            progressiveMode = true
+            extraWarnings = true
+        }
+        jvmToolchain(21)
     }
-    kotlinOptions {
-        jvmTarget = "21"
+
+    packaging {
+        resources.excludes += listOf("**/META-INF/**", "**/kotlin/**", "kotlin-tooling-metadata.json")
     }
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_21)
-    }
-    jvmToolchain(21)
+tasks.withType<PackageAndroidArtifact> {
+    doFirst { appMetadata.asFile.get().writeText("") }
 }
