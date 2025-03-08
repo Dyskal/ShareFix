@@ -24,19 +24,17 @@ class ShareActivity : Activity() {
             "reddit.com", "rxddit.com",
             "threads.net", "vxthreads.net",
         )
-        val authority = links[uri.authority]
-        if (authority != null) {
-            val clip = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            clip.setPrimaryClip(
-                ClipData.newPlainText(
-                    "ShareFix",
-                    uri.buildUpon().authority(authority).clearQuery().toString()
-                )
+        val authority = links.getOrDefault(uri.authority, uri.authority)
+        val clip = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        clip.setPrimaryClip(
+            ClipData.newPlainText(
+                "ShareFix",
+                uri.buildUpon().authority(authority).clearQuery().toString()
             )
-            // Toast if SDK <= 32, else system does it
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
-                Toast.makeText(this, "ShareFix copied", Toast.LENGTH_SHORT).show()
-            }
+        )
+        // Toast if SDK <= 32, else system does it
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+            Toast.makeText(this, "ShareFix copied", Toast.LENGTH_SHORT).show()
         }
         finish()
     }
