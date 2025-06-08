@@ -10,15 +10,15 @@ plugins {
 
 android {
     namespace = "me.dyskal.sharefix"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "me.dyskal.sharefix"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.1"
-        signingConfig = signingConfigs.getByName("debug")
+        setProperty("archivesBaseName", rootProject.name)
     }
 
     flavorDimensions += "api"
@@ -34,6 +34,17 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            if (System.getenv("KEYSTORE_FILE") != null) {
+                storeFile = file(System.getenv("KEYSTORE_FILE"))
+                storePassword = System.getenv("KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS")
+                keyPassword = System.getenv("KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -43,6 +54,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -61,5 +73,7 @@ android {
 }
 
 tasks.withType<PackageAndroidArtifact> {
-    doFirst { appMetadata.asFile.get().writeText("") }
+    doFirst {
+        appMetadata.asFile.orNull?.writeText("")
+    }
 }
