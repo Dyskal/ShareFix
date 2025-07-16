@@ -1,7 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
 import com.android.build.gradle.tasks.PackageAndroidArtifact
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
@@ -59,12 +58,11 @@ android {
     }
 
     kotlin {
+        jvmToolchain(21)
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_21
             progressiveMode = true
             extraWarnings = true
         }
-        jvmToolchain(21)
     }
 
     packaging {
