@@ -17,7 +17,7 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.1"
-        setProperty("archivesBaseName", rootProject.name)
+        base.archivesName = rootProject.name
     }
 
     flavorDimensions += "api"
