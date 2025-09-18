@@ -15,8 +15,8 @@ android {
         applicationId = "me.dyskal.sharefix"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.1"
+        versionCode = 2
+        versionName = "1.2"
         base.archivesName = rootProject.name
     }
 
@@ -66,7 +66,11 @@ android {
     }
 
     packaging {
-        resources.excludes += listOf("**/META-INF/**", "**/kotlin/**", "kotlin-tooling-metadata.json")
+        resources.excludes += listOf(
+            "**/META-INF/**",
+            "**/kotlin/**",
+            "kotlin-tooling-metadata.json",
+        )
     }
 }
 

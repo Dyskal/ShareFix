@@ -8,8 +8,7 @@
             android:viewportHeight="700">
             <path
                 android:fillColor="@color/ic_launcher_gradient"
-                android:pathData="M0,0h700v700h-700z">
-            </path>
+                android:pathData="M0,0h700v700h-700z" />
         </vector>
     </background>
     <foreground>
