@@ -8,6 +8,11 @@ jobs:
   build_and_upload:
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+      contents: write
+      attestations: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -34,11 +39,15 @@ jobs:
         run: |
           ./gradlew assembleRelease
 
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: 'app/build/outputs/apk/api*/release/ShareFix-api*-release.apk'
+          github-token: ${{ secrets.GH_PAT }}
+
       - name: Upload APK to Release
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         with:
-          files: |
-            app/build/outputs/apk/api26/release/ShareFix-api26-release.apk
-            app/build/outputs/apk/api32/release/ShareFix-api32-release.apk
+          files: 'app/build/outputs/apk/api*/release/ShareFix-api*-release.apk'
