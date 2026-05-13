@@ -17,8 +17,8 @@ class ShareActivity : Activity() {
         val links = of(
             "twitter.com", "fixupx.com",
             "x.com", "fixupx.com",
-            "instagram.com", "eeinstagram.com",
-            "www.instagram.com", "eeinstagram.com",
+            "instagram.com", "toinstagram.com",
+            "www.instagram.com", "toinstagram.com",
             "tiktok.com", "vxtiktok.com",
             "vm.tiktok.com", "vxtiktok.com",
             "reddit.com", "rxddit.com",
