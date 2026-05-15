@@ -1,3 +1,1 @@
--assumenosideeffects class kotlin.jvm.internal.Intrinsics {
-    <methods>;
-}
+-processkotlinnullchecks remove
