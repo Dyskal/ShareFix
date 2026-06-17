@@ -14,8 +14,8 @@ android {
         applicationId = "me.dyskal.sharefix"
         minSdk = 26
         targetSdk = 37
-        versionCode = 4
-        versionName = "1.4"
+        versionCode = 5
+        versionName = "1.5"
         base.archivesName = rootProject.name
     }
 
