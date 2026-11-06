@@ -11,25 +11,11 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "me.dyskal.sharefix"
-        minSdk = 26
+        minSdk = 33
         targetSdk = 37
-        versionCode = 5
-        versionName = "1.5"
+        versionCode = 10
+        versionName = "2.0"
         base.archivesName = rootProject.name
-    }
-
-    flavorDimensions += "api"
-
-    productFlavors {
-        create("api26") {
-            dimension = "api"
-        }
-        create("api32") {
-            dimension = "api"
-            minSdk = 32
-            isDefault = true
-        }
     }
 
     signingConfigs {
@@ -39,6 +25,8 @@ android {
                 storePassword = System.getenv("KEYSTORE_PASSWORD")
                 keyAlias = System.getenv("KEY_ALIAS")
                 keyPassword = System.getenv("KEY_PASSWORD")
+            } else {
+                initWith(getByName("debug"))
             }
         }
     }
@@ -61,15 +49,8 @@ android {
             "**/META-INF/**",
             "**/kotlin/**",
             "kotlin-tooling-metadata.json",
+            "app-metadata.properties",
         )
-    }
-}
-
-kotlin {
-    jvmToolchain(21)
-    compilerOptions {
-        progressiveMode = true
-        extraWarnings = true
     }
 }
 

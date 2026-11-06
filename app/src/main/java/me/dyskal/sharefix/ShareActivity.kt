@@ -5,9 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import java.util.Map.of
 
 class ShareActivity : Activity() {
@@ -24,18 +22,17 @@ class ShareActivity : Activity() {
             "reddit.com", "rxddit.com",
             "threads.net", "vxthreads.net",
         )
-        val authority = links.getOrDefault(uri.authority, uri.authority)
-        val clip = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        clip.setPrimaryClip(
-            ClipData.newPlainText(
-                "ShareFix",
-                uri.buildUpon().authority(authority).clearQuery().toString()
-            )
-        )
-        // Toast if SDK <= 32, else system does it
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
-            Toast.makeText(this, "ShareFix copied", Toast.LENGTH_SHORT).show()
+        val authority = uri.authority ?: ""
+        val uriBuilder = uri.buildUpon().authority(links.getOrDefault(authority, authority)).clearQuery()
+        val key = if (authority.endsWith("youtube.com")) "v"
+        else if (authority.endsWith("instagram.com")) "story_media_id"
+        else null
+        if (key != null) {
+            val value = uri.getQueryParameter(key)
+            if (value != null) uriBuilder.appendQueryParameter(key, value)
         }
+        val clip = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        clip.setPrimaryClip(ClipData.newPlainText("ShareFix", uriBuilder.toString()))
         finish()
     }
 }
